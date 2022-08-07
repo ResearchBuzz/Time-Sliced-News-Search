@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+
+    <title>Add Time Spans To Your Search: Search Time Slices</title>
+
+   
+    
+    
+  </head>
+  <body>
+   <div>
+     <h2>
+       Time-Sliced News Search
+     </h2>
+     <h3>
+      This tool takes a year and query you input and generates date-restricted searches for several news search engines, including Google News, Google Books (Books, Newspapers, and Magazines are searched separately), Newspapers.com, and Chronicling America.
+     </h3>
+ 
+     
+        <label>Enter your search query:</label>
+        <input type="text" class="fullquery" value="cold remedy"> <br><br>
+
+<label>Enter the year you want to search: <input type="number" class="yearfull" min="1800" max="2025" value="1951"> <br> (you can go back to 1800, but your results will be limited; for best results start in the late 19th or early 20th century)</label><br><br>
+      
+        <label>Enter your time radius</label>:
+      <input type="number" class="timeradius" min="1" max="3" value="1"><br> (This will create a search for the span of 1, 2, or 3 years before and after your year. This is in addition to the single-year search.)</label>
+
+<br><br>
+
+<input type="button" value="Click Here To Generate Search URLs" name="submit_date" id="btn_day" onclick="day_search()">
+
+<br><br>
+
+<div id="SearchURLs">   </div>
+
+
+
+    <script>
+
+function day_search(){
+
+// Get query from input 
+
+var startquery = document.querySelector(".fullquery")
+var startqueryd = startquery.value
+var startquerye = encodeURI(startquery.value);
+
+var yearfull = document.querySelector(".yearfull")
+yearfull = yearfull.value
+console.log(yearfull)
+
+var timeradius = document.querySelector(".timeradius")
+timeradius = timeradius.value
+console.log(timeradius)
+
+// Making our years to populate the query
+
+var startyear = yearfull.slice(0, -1) + '0'
+var endyear = yearfull.slice(0, -1) + '9'
+
+var startradius = Number(yearfull) - Number(timeradius)
+console.log(startradius)
+var endradius = Number(yearfull) + Number(timeradius)
+console.log(endradius)
+
+// Making the Google News queries
+
+// Specific Year
+
+var GoogleNQY ="https://www.google.com/search?tbm=nws&q="+startquerye+"&tbs=cdr:1,cd_min:1/1/"+yearfull+",cd_max:12/31/"+yearfull
+
+// Year Radius
+
+var GoogleNQYR ="https://www.google.com/search?tbm=nws&q="+startquerye+"&tbs=cdr:1,cd_min:1/1/"+startradius+",cd_max:12/31/"+endradius
+
+// Full Decade
+
+var GoogleNQD ="https://www.google.com/search?tbm=nws&q="+startquerye+"&tbs=cdr:1,cd_min:1/1/"+startyear+",cd_max:12/31/"+endyear
+
+
+// Making Our Google Books (Magazines) Query
+
+//Specific Year
+
+var GoogleBQY = "https://www.google.com/search?q="+startquerye+"&tbs=cdr:1,cd_min:1/1/"+yearfull+",cd_max:12/31/"+yearfull+",bkt:m&tbm=bks"
+
+// Year Radius
+
+var GoogleBQYR = "https://www.google.com/search?q="+startquerye+"&tbs=cdr:1,cd_min:1/1/"+startradius+",cd_max:12/31/"+endradius+",bkt:m&tbm=bks"
+
+// Full Decade
+
+var GoogleBQD = "https://www.google.com/search?q="+startquerye+"&tbs=cdr:1,cd_min:1/1/"+startyear+",cd_max:12/31/"+endyear+",bkt:m&tbm=bks"
+
+// Making Our Google Books (Newspapers) Query
+
+//Specific Year
+
+var GoogleBNQY = "https://www.google.com/search?q="+startquerye+"&tbs=cdr:1,cd_min:1/1/"+yearfull+",cd_max:12/31/"+yearfull+",bkt:s&tbm=bks"
+
+// Year Radius
+
+var GoogleBNQYR = "https://www.google.com/search?q="+startquerye+"&tbs=cdr:1,cd_min:1/1/"+startradius+",cd_max:12/31/"+endradius+",bkt:s&tbm=bks"
+
+// Full Decade
+
+var GoogleBNQD = "https://www.google.com/search?q="+startquerye+"&tbs=cdr:1,cd_min:1/1/"+startyear+",cd_max:12/31/"+endyear+",bkt:s&tbm=bks"
+
+// Making Our Google Books (Books) Query
+
+//Specific Year
+
+var GoogleBBNQY = "https://www.google.com/search?q="+startquerye+"&tbs=cdr:1,cd_min:1/1/"+yearfull+",cd_max:12/31/"+yearfull+",bkt:b&tbm=bks"
+
+// Year Radius
+
+var GoogleBBNQYR = "https://www.google.com/search?q="+startquerye+"&tbs=cdr:1,cd_min:1/1/"+startradius+",cd_max:12/31/"+endradius+",bkt:b&tbm=bks"
+
+// Full Decade
+
+var GoogleBBNQD = "https://www.google.com/search?q="+startquerye+"&tbs=cdr:1,cd_min:1/1/"+startyear+",cd_max:12/31/"+endyear+",bkt:b&tbm=bks"
+
+// Making Our Newspapers.com Query 
+
+//Specific Year
+
+var NPCY = "https://www.newspapers.com/search/?query="+startquerye+"&dr_year="+yearfull+"-"+yearfull
+
+// Year Radius
+
+var NPCYR = "https://www.newspapers.com/search/?query="+startquerye+"&dr_year="+startradius+"-"+endradius
+
+// Full Decade
+
+var NPCD = "https://www.newspapers.com/search/?query="+startquerye+"&dr_year="+startyear+"-"+endyear
+
+// Making Our Chronicling America Query
+
+//Specific Year
+
+var CACY ="https://chroniclingamerica.loc.gov/search/pages/results/?state=&date1="+yearfull+"&date2="+yearfull+"&proxtext="+startquerye+"&x=0&y=0&dateFilterType=yearRange&sort=date"
+
+// Year Radius
+
+var CACYR ="https://chroniclingamerica.loc.gov/search/pages/results/?state=&date1="+startradius+"&date2="+endradius+"&proxtext="+startquerye+"&x=0&y=0&dateFilterType=yearRange&sort=date"
+
+// Full Decade 
+
+var CACD ="https://chroniclingamerica.loc.gov/search/pages/results/?state=&date1="+startyear+"&date2="+endyear+"&proxtext="+startquerye+"&x=0&y=0&dateFilterType=yearRange&sort=date"
+
+// Listing the search URLs 
+
+var linklist = document.getElementById("SearchURLs")
+
+var linklisttext = "<b>Your query is:</b>"+" "+startqueryd+"<br><br>"+"<b>Your single-year search is:</b>"+yearfull+"<br><br>"+"<b>Your search time radius is:</b>"+startradius+"-"+endradius+"<h3><i>Search Queries</i></h3>"+"<h4>Google News (not great for older searches; check Google Books searches if you're not getting anything here.)</h4>"+"Single year search: "+GoogleNQY.link(GoogleNQY)+"<br><br> Time radius search: "+GoogleNQYR.link(GoogleNQYR)+"<br><br> Decade search: "+GoogleNQD.link(GoogleNQD)
+
++"<h4>Google Books (Magazines Only)</h4>"+"Single year search: "+GoogleBQY.link(GoogleBQY)+"<br><br> Time radius search: "+GoogleBQYR.link(GoogleBQYR)+"<br><br> Decade search: "+GoogleBQD.link(GoogleBQD)
+
++"<h4>Google Books (Newspapers Only)</h4>"+"Single year search: "+GoogleBNQY.link(GoogleBNQY)+"<br><br> Time radius search: "+GoogleBNQYR.link(GoogleBNQYR)+"<br><br> Decade search: "+GoogleBNQD.link(GoogleBNQD)
+
++"<h4>Google Books (Books Only)</h4>"+"Single year search: "+GoogleBBNQY.link(GoogleBBNQY)+"<br><br> Time radius search: "+GoogleBBNQYR.link(GoogleBBNQYR)+"<br><br> Decade search: "+GoogleBBNQD.link(GoogleBBNQD)
+
++"<h4>Newspapers.com</h4>"+"Single year search: "+NPCY.link(NPCY)+"<br><br> Time radius search: "+NPCYR.link(NPCYR)+"<br><br> Decade search: "+NPCD.link(NPCD)
+
++"<h4>Chronicling America (The opposite of Google News: works well with older searches, poorly for recent ones.)</h4>"+"Single year search: "+CACY.link(CACY)+"<br><br> Time radius search: "+CACYR.link(CACYR)+"<br><br> Decade search: "+CACD.link(CACD)
+
+
+
+
+
+
+linklist.innerHTML = linklisttext
+
+
+
+
+}
+
+</script>
+
+  </body>
+</html>
